@@ -872,6 +872,11 @@ void GcodeSuite::process_parsed_command(bool no_ok/*=false*/) {
 
       case 400: M400(); break;                                    // M400: Finish all moves
 
+      case 4000: M4000(); break;                                  // M4000: Wait for the TDC needle-phase switch
+      case 4001: M4001(); break;                                  // M4001: Report the TDC needle-phase switch
+      case 4002: M4002(); break;                                  // M4002: Seek TDC by advancing E
+      case 4003: M4003(); break;                                  // M4003: Clear the TDC fault latch
+
       #if HAS_BED_PROBE
         case 401: M401(); break;                                  // M401: Deploy probe
         case 402: M402(); break;                                  // M402: Stow probe

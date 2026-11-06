@@ -1076,6 +1076,12 @@ private:
 
   static void M400();
 
+  // QIDI X-Pro CNC needle-phase helpers
+  static void M4000();  // Wait for the TDC switch
+  static void M4001();  // Report the TDC switch state
+  static void M4002();  // Seek TDC with one continuous E move
+  static void M4003();  // Clear (or report) the TDC fault latch
+
   #if HAS_BED_PROBE
     static void M401();
     static void M401_report(const bool forReplay=true);

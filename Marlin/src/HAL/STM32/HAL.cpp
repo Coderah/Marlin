@@ -80,6 +80,10 @@ void MarlinHAL::init() {
   constexpr unsigned int cpuFreq = F_CPU;
   UNUSED(cpuFreq);
 
+  #ifdef BOARD_INIT
+    BOARD_INIT(); // Board-specific early pin setup (power hold, LEDs, etc.)
+  #endif
+
   #if HAS_MEDIA && DISABLED(ONBOARD_SDIO) && PIN_EXISTS(SD_SS)
     OUT_WRITE(SD_SS_PIN, HIGH); // Try to set SDSS inactive before any other SPI users start up
   #endif

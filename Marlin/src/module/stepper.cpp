@@ -77,6 +77,11 @@ Stepper stepper; // Singleton
 #include "planner.h"
 #include "motion.h"
 
+#if PIN_EXISTS(TDC)
+  extern volatile bool tdc_seek_active;
+  extern volatile bool tdc_seek_hit;
+#endif
+
 #if ENABLED(FT_MOTION)
   #include "ft_motion.h"
 #endif
@@ -1896,6 +1901,17 @@ hal_timer_t Stepper::isr_events() {
 }
 
 void Stepper::isr() {
+
+  #if PIN_EXISTS(TDC)
+    // Sample the TDC switch at the step rate while a seek is running. Polling
+    // from the main loop can miss a narrow switch pulse at higher handwheel
+    // speeds even though M4001 sees the switch perfectly at standstill.
+    if (tdc_seek_active && READ(TDC_PIN) == (TDC_ENDSTOP_INVERTING ? LOW : HIGH)) {
+      tdc_seek_hit = true;
+      tdc_seek_active = false;
+      abort_current_block = true; // Stop the seek at the first TDC pulse
+    }
+  #endif
 
   // Program timer compare for the maximum period, so it does NOT
   // flag an interrupt while this ISR is running - So changes from small

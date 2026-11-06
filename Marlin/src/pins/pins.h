@@ -818,6 +818,8 @@
   #include "stm32f4/pins_FLY_RRF_E3_V1.h"           // STM32F4                              env:FLY_RRF_E3_V1
 #elif MB(FLY_SUPER8)
   #include "stm32f4/pins_FLY_SUPER8.h"              // STM32F4                              env:FLY_SUPER8
+#elif MB(QIDI_XPRO_V46)
+  #include "stm32f4/pins_QIDI_XPRO_V46.h"           // STM32F4                              env:QIDI_XPRO_V46
 #elif MB(FLY_D8)
   #include "stm32f4/pins_FLY_D8.h"                  // STM32F4                              env:FLY_D8
 #elif MB(FLY_CDY_V3)

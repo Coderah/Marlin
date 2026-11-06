@@ -30,4 +30,12 @@ void GcodeSuite::M119() {
 
   endstops.report_states();
 
+  #if PIN_EXISTS(TDC)
+    SERIAL_ECHOPGM("TDC: ");
+    if (READ(TDC_PIN) == (TDC_ENDSTOP_INVERTING ? LOW : HIGH))
+      SERIAL_ECHOLNPGM("TRIGGERED");
+    else
+      SERIAL_ECHOLNPGM("open");
+  #endif
+
 }

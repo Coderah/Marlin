@@ -49,6 +49,16 @@
 void GcodeSuite::G0_G1(TERN_(HAS_FAST_MOVES, const bool fast_move/*=false*/)) {
   if (motion.gcode_motion_ignored()) return;
 
+  #if PIN_EXISTS(TDC)
+    // A failed TDC seek latches this until M4003. Dropping the queued moves is
+    // what makes the stop immediate when the clutch slips or the needle jams.
+    extern bool tdc_fault_latched;
+    if (tdc_fault_latched) {
+      SERIAL_ECHOLNPGM("echo:TDC fault latched - motion blocked (M4003 to clear)");
+      return;
+    }
+  #endif
+
   TERN_(FULL_REPORT_TO_HOST_FEATURE, motion.set_and_report_grblstate(M_RUNNING));
 
   #ifdef G0_FEEDRATE
